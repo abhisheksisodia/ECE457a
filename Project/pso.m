@@ -1,7 +1,7 @@
 function[xkx,xky,numofTurb] = pso(Lx,Ly,Pwt,D)
 %Initialize the c1, c2, w values
 c1 = 1.4944;
-c2 = 0.25;
+c2 = 1.4944;
 w = 0;
 numOfIt = 10000;
 
