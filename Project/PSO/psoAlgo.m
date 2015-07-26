@@ -1,27 +1,26 @@
-function[xkx,xky,numofTurb] = pso(Lx,Ly,Pwt,D)
+function[xkx,xky,numofTurb] = psoAlgo(Lx,Ly,Pwt,D)
 %Initialize the c1, c2, w values
 c1 = 1.4944;
 c2 = 1.4944;
-w = 0;
-numOfIt = 10000;
+numOfIt = 1000;
 
 %Initially generate random values for krow and kcol positions
 xmin = 4.5;
 xmax = 5.5;
-xkrow = xmin+(xmax-xmin)*rand(4,1);
-xkcol = xmin+(xmax-xmin)*rand(4,1);
+xkrow = xmin+(xmax-xmin)*rand(10,1);
+xkcol = xmin+(xmax-xmin)*rand(10,1);
 
 %Initialize velocity of particles to zero
-vkrow = zeros(4,1);
-vkcol = zeros(4,1);
-fx = zeros(4,1);
+vkrow = zeros(10,1);
+vkcol = zeros(10,1);
+fx = zeros(10,1);
 
 for j=1:numOfIt
     %generate r1 and r2 between 0 and 1 for each iteration
     r1 = rand();
     r2 = rand();
     %Calculate the objective function value for each of particle's position values
-    for k=1:4
+    for k=1:10
         fx(k,1) = calcObjfun(xkrow(k,1),xkcol(k,1),Lx,Ly,D,Pwt);
     end
 
@@ -39,9 +38,11 @@ for j=1:numOfIt
     gbestkcol = xkcol(a,1);
     
     % update velocity and position
-    for i=1:4
-       vkrow(i,1) = (w*vkrow(i,1))+(c1*r1*(pbestkrow(i,1)-xkrow(i,1)))+(c2*r2*(gbestkrow-xkrow(i,1)));
-       vkcol(i,1) = (w*vkcol(i,1))+(c1*r1*(pbestkcol(i,1)-xkcol(i,1)))+(c2*r2*(gbestkcol-xkcol(i,1)));
+    for i=1:10
+       wkrow = (1.1-(gbestkrow/pbestkrow(i,1)));
+       wkcol = (1.1-(gbestkrow/pbestkcol(i,1)));
+       vkrow(i,1) = (wkrow*vkrow(i,1))+(c1*r1*(pbestkrow(i,1)-xkrow(i,1)))+(c2*r2*(gbestkrow-xkrow(i,1)));
+       vkcol(i,1) = (wkcol*vkcol(i,1))+(c1*r1*(pbestkcol(i,1)-xkcol(i,1)))+(c2*r2*(gbestkcol-xkcol(i,1)));
        xkrow(i,1) = xkrow(i,1) + vkrow(i,1);
        xkcol(i,1) = xkcol(i,1) + vkcol(i,1);
     end
