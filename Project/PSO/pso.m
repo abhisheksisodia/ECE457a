@@ -1,10 +1,11 @@
-function[xkx,xky,numofTurb] = psoAlgo(Lx,Ly,Pwt,D)
-%Initialize the c1, c2, w values
+function[xkx,xky,numofTurb] = pso(Lx,Ly,Pwt,D)
+%Initialize the c1, c2
 c1 = 1.4944;
 c2 = 1.4944;
+%set the number of iterations
 numOfIt = 1000;
 
-%Initially generate random values for krow and kcol positions
+%Initially generate random values for krow and kcol positions withing range [4.5,5.5]
 xmin = 4.5;
 xmax = 5.5;
 xkrow = xmin+(xmax-xmin)*rand(10,1);
@@ -39,8 +40,11 @@ for j=1:numOfIt
     
     % update velocity and position
     for i=1:10
+        %adaptive calculation of inertia weight for krow and kcol
        wkrow = (1.1-(gbestkrow/pbestkrow(i,1)));
        wkcol = (1.1-(gbestkrow/pbestkcol(i,1)));
+
+       %calculate velocity and position
        vkrow(i,1) = (wkrow*vkrow(i,1))+(c1*r1*(pbestkrow(i,1)-xkrow(i,1)))+(c2*r2*(gbestkrow-xkrow(i,1)));
        vkcol(i,1) = (wkcol*vkcol(i,1))+(c1*r1*(pbestkcol(i,1)-xkcol(i,1)))+(c2*r2*(gbestkcol-xkcol(i,1)));
        xkrow(i,1) = xkrow(i,1) + vkrow(i,1);
@@ -48,6 +52,7 @@ for j=1:numOfIt
     end
 end
 
+    %final values for krow, kcol and numofTurb
     xkx = mean(xkrow(:));
     xky = mean(xkcol(:));
     numofTurb = ((Lx/(xkx*D))+1)*((Ly/(xky*D))+1);
