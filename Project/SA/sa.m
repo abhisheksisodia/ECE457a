@@ -1,8 +1,8 @@
 function[xkx,xky,numofTurb] = sa(Lx,Ly,Pwt,D)
-    T=1000;
-    alpha = 0.3; 
+    alpha = 0.3; %Geometric cooling factor
     T_init =100; % Initial temperature
     T_min = 1e-10; % Final stopping temperature
+    T=T_init; %Iterator variable
     max_rej=2500; % Maximum number of rejections
     max_run=500; % Maximum number of runs
     max_accept = 15; % Maximum number of accept
@@ -35,8 +35,8 @@ function[xkx,xky,numofTurb] = sa(Lx,Ly,Pwt,D)
             i = 1; accept = 1;
         end
 
-        new_k_row=4.5+rand(1)*(5.5-4.5);
-        new_k_col=4.5+rand(1)*(5.5-4.5);
+        new_k_row=xmin+rand(1)*(xmax-xmin);
+        new_k_col=xmin+rand(1)*(xmax-xmin);
 
         new_N=(Lx/(k_row*D)+1)*(Ly/(k_col*D)+1);
         new_Power=2628*N*Pwt;
