@@ -10,8 +10,10 @@ function[xkx,xky,numofTurb] = sa(Lx,Ly,Pwt,D)
     i= 0; j = 0; accept = 0; totaleval = 0;
 
     %Initial 
-    k_row=4.8+rand(1)*(5.2-4.8);
-    k_col=4.8+rand(1)*(5.2-4.8);
+    xmin = 4.5;
+    xmax = 5.5;
+    k_row=xmin+rand(1)*(xmax-xmin);
+    k_col=xmin+rand(1)*(xmax-xmin);
 
     N=(Lx/(k_row*D)+1)*(Ly/(k_col*D)+1);
     Power=2628*N*Pwt;
@@ -21,7 +23,10 @@ function[xkx,xky,numofTurb] = sa(Lx,Ly,Pwt,D)
     while ((T > T_min) & (j <= max_rej))
         i = i+1;
         % Check if max numbers of run/accept are met
-        if (i >= max_run) | (accept >= max_accept)
+       
+        %the maximum accept value increases as the temperature decreases so
+        %as to increase intensification. This makes the algorithm adaptive
+        if (i >= max_run) | (accept >= max_accept*(T_init+1-T)) 
             % Cooling according to a cooling schedule
             T = T_init/(1 + (alpha * i));
             totaleval = totaleval + i;
