@@ -176,22 +176,35 @@ Lx = str2num(get(handles.Lx,'String'));
 Ly = str2num(get(handles.Ly,'String'));
 D = str2num(get(handles.D,'String'));
 Pwt = str2num(get(handles.Pwt,'String'));
-
+xkrow = zeros(10,1);
+xkcol = zeros(10,1);
+N = zeros(10,1);
+  
 v = get(handles.popupmenu1,'Value'); %get currently selected option from menu
 if v == 1
-   %stuff here
+   %run the algorithm 10 times for the gui
+  [xkx,xky,N] = ts(Lx,Ly,Pwt,D);
+  set(handles.krow,'String',xkx);
+  set(handles.kcol,'String',xky);
+  set(handles.N,'String',N);
 elseif v == 2
-   %stuff here
+   %run the algorithm 10 times for the gui
+   for i=1:10
+    [xkrow(i,1),xkcol(i,1),N(i,1)] = ga(Lx,Ly,Pwt,D);
+   end
+  set(handles.krow,'String',mean(xkrow(:)));
+  set(handles.kcol,'String',mean(xkcol(:)));
+  set(handles.N,'String',mean(N(:)));
 elseif v == 3
-   [k_row, k_col, N] = sa(Lx,Ly,Pwt,D);
-   set(handles.krow,'String',k_row);
-   set(handles.kcol,'String',k_col);
-   set(handles.N,'String',N);
+   %run the algorithm 10 times for the gui
+   for i=1:10
+    [xkrow(i,1),xkcol(i,1),N(i,1)] = sa(Lx,Ly,Pwt,D);
+   end
+  set(handles.krow,'String',mean(xkrow(:)));
+  set(handles.kcol,'String',mean(xkcol(:)));
+  set(handles.N,'String',mean(N(:)));
 elseif v == 4 %run PSO
    %run the algorithm 10 times for the gui
-  xkrow = zeros(10,1);
-  xkcol = zeros(10,1);
-  N = zeros(10,1);
   for i=1:10
     [xkrow(i,1),xkcol(i,1),N(i,1)] = pso(Lx,Ly,Pwt,D);
   end
@@ -199,6 +212,11 @@ elseif v == 4 %run PSO
   set(handles.krow,'String',mean(xkrow(:)));
   set(handles.kcol,'String',mean(xkcol(:)));
   set(handles.N,'String',mean(N(:)));
+elseif v == 5
+  [xkx,xky,N] = aco(Lx,Ly,Pwt,D);
+  set(handles.krow,'String',xkx);
+  set(handles.kcol,'String',xky);
+  set(handles.N,'String',N);
 end
 
 
