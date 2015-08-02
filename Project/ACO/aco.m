@@ -36,45 +36,44 @@ function [xkx,xky,numofTurb] = aco(Lx,Ly,Pwt,D)
       end
     end
     
-    subplot(2, 1, 1); 
-    plot(colony(1).iteration,  mean(vertcat(colony.maxcost),1));
-    title('Best Power/Cost vs. Iteration');
-    xlabel('Iteration');
-    ylabel('Power/Cost');
+%     subplot(2, 1, 1); 
+%     plot(colony(1).iteration,  mean(vertcat(colony.maxcost),1));
+%     title('Best Power/Cost vs. Iteration');
+%     xlabel('Iteration');
+%     ylabel('Power/Cost');
 
-    [k, l] = max([colony.maxcost]);
-    for i = 1:(dim+2)
-      besttour = vertcat(colony.besttour);
-      indx = besttour(l, i);
-      X(i) = x(indx);
-      Y(i) = y(indx);
-    end
+%     [k, l] = max([colony.maxcost]);
+%     for i = 1:(dim+2)
+%       besttour = vertcat(colony.besttour);
+%       indx = besttour(l, i);
+%       X(i) = x(indx);
+%       Y(i) = y(indx);
+%     end
 
-    subplot(2, 1, 2); 
-    plot(X, Y, '--rs', 'LineWidth', 2, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'g', 'MarkerSize', 10)
-    xlabel('X'); ylabel('Y'); axis('equal');
-
-    for i = 1:(dim+2)
-      besttour = vertcat(colony.besttour);
-      indx = besttour(l, i);
-      if i == 2 
-        value = xgrid(indx - 1);        
-        text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx), ', value ', num2str(value)]);
-      elseif i == 3
-        value = ygrid(indx - 1 - Ndiv);
-        text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx), ', value ', num2str(value)]);
-      else
-        text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx)]);
-      end
-    end
-    title(['optimum course -- MAX(Power/Cost) = ', num2str(k)]);
+%     subplot(2, 1, 2); 
+%     plot(X, Y, '--rs', 'LineWidth', 2, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'g', 'MarkerSize', 10)
+%     xlabel('X'); ylabel('Y'); axis('equal');
+    
+%     for i = 1:(dim+2)
+%       besttour = vertcat(colony.besttour);
+%       indx = besttour(l, i);
+%       if i == 2 
+%         value = xgrid(indx - 1);        
+%         text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx), ', value ', num2str(value)]);
+%       elseif i == 3
+%         value = ygrid(indx - 1 - Ndiv);
+%         text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx), ', value ', num2str(value)]);
+%       else
+%         text(X(i) + .5, Y(i), ['\leftarrow node ', num2str(indx)]);
+%       end
+%     end
+%     title(['optimum course -- MAX(Power/Cost) = ', num2str(k)]);
     
     
     [k, l] = max([colony.maxcost]);
     besttour = vertcat(colony.besttour);
-    indx = besttour(l, i);
-    xkx = xgrid(indx - 1);
-    xky = ygrid(indx - 1 - Ndiv);
+    xkx = xgrid(besttour(l, 2) - 1);
+    xky = ygrid(besttour(l, 3) - 1 - Ndiv);
     numofTurb = ((Ly/(xky*D))+1)*((Lx/(xkx*D))+1);
 end
 
