@@ -61,8 +61,8 @@ end
 %function [xkrow, xkcol] = crossover(a)
 function [c1, c2] = crossover(xkrow, xkcol)
 
-    c1 = xkrow * 0.2 + xkcol * 0.8;
-    c2 = xkrow * 0.8 + xkcol * 0.2;
+    c1 = xkrow * 0.4 + xkcol * 0.6;
+    c2 = xkrow * 0.6 + xkcol * 0.4;
 
 end
 
